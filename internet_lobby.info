@@ -1,0 +1,4 @@
+name = Internet lobby
+description = custom module of internet lobby
+version = 7.x-1.x-dev
+core = 7.x
