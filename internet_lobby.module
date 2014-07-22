@@ -3,101 +3,83 @@
   * Implements hook_menu(). 
   */
  function internet_lobby_menu() {
-   $items = array();
-   $items['internet-lobby-page'] = array(
-     'title' => 'Интернет приемная',
-     'page callback' => 'drupal_get_form',
-     'page arguments' => array('internet_lobby_page_form'),
-   'access callback' => TRUE,
+  $items = array();
+  $items['internet-lobby-page'] = array (
+    'title' => 'Internet lobby',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('internet_lobby_page_form'),
+    'access callback' => TRUE,
   );
   return $items;
 }
 
 /**
- * Build lobby form.
- */
-function internet_lobby_page_form($form, $form_state) {
- $form = array();
- $form['surname'] = array(
-  '#type' => 'textfield',
-  '#title' => t('Фамилия'),
-  '#size' => 50,
-  '#maxlength' => 50,
+  * Build lobby form.
+  */
+ function internet_lobby_page_form($form, $form_state) {
+  $form = array();
+  $form['surname'] = array (
+    '#type' => 'textfield',
+    '#title' => t('Surname'),
+    '#required'=> TRUE,
   );
-$form['name'] = array(
-  '#type' => 'textfield',
-  '#title' => t('Имя'),
-  '#size' => 50,
-  '#maxlength' => 50,
+  $form['name'] = array (
+    '#type' => 'textfield',
+    '#title' => t('Name'),
+    '#required'=> TRUE,
   );
-$form['secondname'] = array(
-  '#type' => 'textfield',
-  '#title' => t('Отчество'),
-  '#size' => 50,
-  '#maxlength' => 50,
+  $form['secondname'] = array (
+    '#type' => 'textfield',
+    '#title' => t('Second name'),
+    '#required'=> TRUE,
   );
-$form['age'] = array(
-  '#type' => 'textfield',
-  '#title' => t('Возраст'),
-  '#size' => 3,
-  '#maxlength' => 3,
+  $form['age'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Age'),
+    '#size' => 3,
+    '#maxlength' => 3,
+    '#required'=> TRUE,
   );
-$form['theme'] = array(
-  '#type' => 'textfield',
-  '#title' => t('Тема обращения'),
-  '#size' => 50,
-  '#maxlength' => 150,
+  $form['theme'] = array (
+    '#type' => 'textfield',
+    '#title' => t('Theme'),
+    '#required'=> TRUE,
   );
-$form['message'] = array(
-  '#type' => 'textarea',
-  '#title' => t('Текст обращения'),
-  '#size' => 50,
+  $form['message'] = array (
+    '#type' => 'textarea',
+    '#title' => t('Message'),
+    '#required'=> TRUE,
   );
-$form['submit'] = array(
-  '#type' => 'submit',
-  '#value' => t('Отправить'),
+  $form['submit'] = array (
+    '#type' => 'submit',
+    '#value' => t('Send'),
+    '#required'=> TRUE,
   );
- return $form;
+  return $form;
 }
 
 /**
- * Validate function for internet_lobby_page_form. 
- */ 
-function internet_lobby_page_form_validate($form, &$form_state) { 
-  if (empty($form_state['values']['surname'])) {
-    form_set_error('surname', t('Введите фамилию'));
-    }
-  if (empty($form_state['values']['name'])) {
-    form_set_error('name', t('Введите имя'));
-    }
-  if (empty($form_state['values']['secondname'])) {
-    form_set_error('secondname', t('Введите отчество'));
-    }
-  if (!is_numeric($form_state['values']['age'])) {
-    form_set_error('age', t('Введите возраст'));
-    }
+  * Validate function for internet_lobby_page_form. 
+  */ 
+ function internet_lobby_page_form_validate($form, &$form_state) { 
   if (($form_state['values']['age'])<=0) {
-    form_set_error('age', t('Введите  корректный возраст'));
-    }
-  if (empty($form_state['values']['theme'])) {
-    form_set_error('theme', t('Введите тему'));
-    }
-  if (empty($form_state['values']['message'])) {
-    form_set_error('message', t('Введите обращение'));
-    }
+    form_set_error('age', t('Enter the correct age'));
+  }
 } 
 
 /**
- * Submit function for internet_lobby_page_form.
- */
-function internet_lobby_page_form_submit($form, &$form_state) {
-  if(mail("admin@example.com", $form_state['values']['theme'], $form_state['values']['message'],
-  "Отправитель: ".$form_state['values']['surname']." ".$form_state['values']['name']." ".$form_state['values']['secondname'].", ".$form_state['values']['age']." лет"))
-   {
-    drupal_set_message(t('Письмо успешно отправлено')); 
+  * Submit function for internet_lobby_page_form.
+  */
+ function internet_lobby_page_form_submit($form, &$form_state) {
+  $mailname = "admin@example.com";
+  $theme = $form_state['values']['theme'];
+  $message = $form_state['values']['message'];
+  $sender = "Sender: ".$form_state['values']['surname']." ".$form_state['values']['name']." ".$form_state['values']['secondname'].", ".$form_state['values']['age']." age";
+  $check = mail($mailname, $theme, $message, $sender);
+  if(check) {    
+    drupal_set_message(t('Message sent')); 
   } 
-  else 
-  { 
-    drupal_set_message(t('К сожалению, письмо не отправлено')); 
+  else { 
+    drupal_set_message(t("Unforunately, message wasn't sent")); 
   } 
 }
