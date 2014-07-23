@@ -24,10 +24,10 @@ function internet_lobby_email_page_form_submit($form, &$form_state) {
     db_merge('admin_mail')
       -> key(array('id' => '1'))
       -> fields(array(
-          'mail' => $form_state['values']['mail'],
-        )
+        'mail' => $form_state['values']['mail'],
       )
-      -> execute();
+    )
+    -> execute();
   }
   else {
     drupal_set_message(t("You don't have enough authority"));
