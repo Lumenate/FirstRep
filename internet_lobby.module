@@ -74,16 +74,7 @@ function internet_lobby_page_form_validate($form, &$form_state) {
   * Submit function for internet_lobby_page_form.
   */
 function internet_lobby_page_form_submit($form, &$form_state) {
-  $params = array (
-    'subject' => $form_state['values']['theme'],
-    'body' => $form_state['values']['message'],
-    'surname' => $form_state['values']['surname'],
-    'name' => $form_state['values']['name'],
-    'secondname' => $form_state['values']['secondname'],
-    'age' => $form_state['values']['age'],
-    'email' => $form_state['values']['email'],
-  );
-  $mail = drupal_mail('internet_lobby', 'key', "admin@example.com", language_default(), $params);
+  $mail = drupal_mail('internet_lobby', 'key', "admin@example.com", language_default(), $form_state['values']);
   if ($mail['result']) {    
     drupal_set_message(t('Message sent')); 
   } 
