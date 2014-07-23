@@ -4,9 +4,9 @@
   */
  function internet_lobby_menu() {
     $items['internet-lobby-page'] = array (
-      'title' => 'Internet lobby',
-      'page callback' => 'drupal_get_form',
-      'page arguments' => array('internet_lobby_page_form'),
+      'title'           => 'Internet lobby',
+      'page callback'   => 'drupal_get_form',
+      'page arguments'  => array('internet_lobby_page_form'),
       'access callback' => TRUE,
     );
     return $items;
@@ -17,40 +17,40 @@
   */
  function internet_lobby_page_form($form, $form_state) {
     $form['surname'] = array (
-      '#type' => 'textfield',
-      '#title' => t('Surname'),
+      '#type'    => 'textfield',
+      '#title'   => t('Surname'),
       '#required'=> TRUE,
     );
     $form['name'] = array (
-      '#type' => 'textfield',
-      '#title' => t('Name'),
+      '#type'    => 'textfield',
+      '#title'   => t('Name'),
       '#required'=> TRUE,
     );
     $form['secondname'] = array (
-      '#type' => 'textfield',
-      '#title' => t('Second name'),
+      '#type'    => 'textfield',
+      '#title'   => t('Second name'),
       '#required'=> TRUE,
     );
     $form['age'] = array(
-      '#type' => 'textfield',
-      '#title' => t('Age'),
-      '#size' => 3,
+      '#type'      => 'textfield',
+      '#title'     => t('Age'),
+      '#size'      => 3,
       '#maxlength' => 3,
-      '#required'=> TRUE,
+      '#required'  => TRUE,
     );
     $form['theme'] = array (
-      '#type' => 'textfield',
-      '#title' => t('Theme'),
+      '#type'    => 'textfield',
+      '#title'   => t('Theme'),
       '#required'=> TRUE,
     );
     $form['message'] = array (
-      '#type' => 'textarea',
-      '#title' => t('Message'),
+      '#type'    => 'textarea',
+      '#title'   => t('Message'),
       '#required'=> TRUE,
     );
     $form['submit'] = array (
-      '#type' => 'submit',
-      '#value' => t('Send'),
+      '#type'    => 'submit',
+      '#value'   => t('Send'),
       '#required'=> TRUE,
     );
     return $form;
@@ -70,10 +70,10 @@
   */
  function internet_lobby_page_form_submit($form, &$form_state) {
     $mailname = "admin@example.com";
-    $theme = $form_state['values']['theme'];
-    $message = $form_state['values']['message'];
-    $sender = "Sender: ".$form_state['values']['surname']." ".$form_state['values']['name']." ".$form_state['values']['secondname'].", ".$form_state['values']['age']." age";
-    $mail = drupal_mail('internet_lobby_page',$mailname, $theme, $message, $sender);
+    $theme    = $form_state['values']['theme'];
+    $message  = $form_state['values']['message'];
+    $sender   = "Sender: ".$form_state['values']['surname']." ".$form_state['values']['name']." ".$form_state['values']['secondname'].", ".$form_state['values']['age']." age";
+    $mail     = drupal_mail('internet_lobby_page',$mailname, $theme, $message, $sender);
     if($mail) {    
       drupal_set_message(t('Message sent')); 
     } 
