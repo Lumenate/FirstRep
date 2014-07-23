@@ -4,9 +4,9 @@
   */
 function internet_lobby_menu() {
   $items['internet-lobby-page'] = array (
-    'title'           => 'Internet lobby',
-    'page callback'   => 'drupal_get_form',
-    'page arguments'  => array('internet_lobby_page_form'),
+    'title' => 'Internet lobby',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('internet_lobby_page_form'),
     'access callback' => TRUE,
   );
   return $items;
@@ -17,40 +17,45 @@ function internet_lobby_menu() {
   */
 function internet_lobby_page_form($form, $form_state) {
   $form['surname'] = array (
-    '#type'     => 'textfield',
-    '#title'    => t('Surname'),
+    '#type' => 'textfield',
+    '#title' => t('Surname'),
     '#required' => TRUE,
   );
   $form['name'] = array (
-    '#type'     => 'textfield',
-    '#title'    => t('Name'),
+    '#type' => 'textfield',
+    '#title' => t('Name'),
     '#required' => TRUE,
   );
   $form['secondname'] = array (
-    '#type'     => 'textfield',
-    '#title'    => t('Second name'),
+    '#type' => 'textfield',
+    '#title' => t('Second name'),
     '#required' => TRUE,
   );
-  $form['age'] = array(
-    '#type'      => 'textfield',
-    '#title'     => t('Age'),
-    '#size'      => 3,
-    '#maxlength' => 3,
+  $form['email'] = array(
+    '#type' => 'textfield',
+    '#title' => t('E-mail'),
     '#required'  => TRUE,
   );
+  $form['age'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Age'),
+    '#size' => 3,
+    '#maxlength' => 3,
+    '#required' => TRUE,
+  );
   $form['theme'] = array (
-    '#type'     => 'textfield',
-    '#title'    => t('Theme'),
+    '#type' => 'textfield',
+    '#title' => t('Theme'),
     '#required' => TRUE,
   );
   $form['message'] = array (
-    '#type'     => 'textarea',
-    '#title'    => t('Message'),
+    '#type' => 'textarea',
+    '#title' => t('Message'),
     '#required' => TRUE,
   );
   $form['submit'] = array (
-    '#type'     => 'submit',
-    '#value'    => t('Send'),
+    '#type' => 'submit',
+    '#value' => t('Send'),
     '#required' => TRUE,
   );
   return $form;
@@ -60,7 +65,7 @@ function internet_lobby_page_form($form, $form_state) {
   * Validate function for internet_lobby_page_form. 
   */ 
 function internet_lobby_page_form_validate($form, &$form_state) { 
-  if (($form_state['values']['age'] <= 0)||(!is_numeric($form_state['values']['age']))) {
+  if (($form_state['values']['age'] <= 0) || (!is_numeric($form_state['values']['age']))) {
     form_set_error('age', t('Enter the correct age'));
   }
 } 
@@ -70,16 +75,24 @@ function internet_lobby_page_form_validate($form, &$form_state) {
   */
 function internet_lobby_page_form_submit($form, &$form_state) {
   $mailname = "admin@example.com";
-  $theme    = $form_state['values']['theme'];
+  $theme = $form_state['values']['theme'];
   $message  = $form_state['values']['message'];
-  $sender   = "Sender: ".$form_state['values']['surname']." ".$form_state['values']['name']." ".$form_state['values']['secondname'].", ".$form_state['values']['age']." age";
+  $surname = $form_state['values']['surname'];
+  $name = $form_state['values']['name'];
+  $secondname = $form_state['values']['secondname'];
+  $age = $form_state['values']['age'];
+  $email = $form_state['values']['email'];
   $params   = array (
     'subject' => t($theme),
-    'body'    => t($message),
+    'body' => t($message),
+    'surname' => t($surname),
+    'name' => t($name),
+    'secondname' => t($secondname),
+    'age' => t($age),
+    'mail' => ($email),
   );
-  $mail     = drupal_mail('internet_lobby','key',$mailname,language_default(),$params,$sender);
-  //$mail['result'] = $system->mail($mail);
-  if($mail) {    
+  $mail = drupal_mail('internet_lobby', 'key', $mailname, language_default(), $params);
+  if ($mail['result']) {    
     drupal_set_message(t('Message sent')); 
   } 
   else { 
@@ -93,6 +106,6 @@ function internet_lobby_page_form_submit($form, &$form_state) {
 function internet_lobby_mail($key, &$message, $params) {
   if ($key == 'key') {
     $message['subject'] = $params['subject'];
-    $message['body'][]  = $params['body'];
+    $message['body'][] = $params['body'] . "\n" . $params['surname'] . " " . $params['name'] . " " . $params['secondname'] . ", " . $params['age'] . " " . $params['mail'];
   }
 }
