@@ -74,24 +74,16 @@ function internet_lobby_page_form_validate($form, &$form_state) {
   * Submit function for internet_lobby_page_form.
   */
 function internet_lobby_page_form_submit($form, &$form_state) {
-  $mailname = "admin@example.com";
-  $theme = $form_state['values']['theme'];
-  $message  = $form_state['values']['message'];
-  $surname = $form_state['values']['surname'];
-  $name = $form_state['values']['name'];
-  $secondname = $form_state['values']['secondname'];
-  $age = $form_state['values']['age'];
-  $email = $form_state['values']['email'];
   $params   = array (
-    'subject' => $theme,
-    'body' => $message,
-    'surname' => $surname,
-    'name' => $name,
-    'secondname' => $secondname,
-    'age' => $age,
-    'email' => $email,
+    'subject' => $form_state['values']['theme'],
+    'body' => $form_state['values']['message'],
+    'surname' => $form_state['values']['surname'],
+    'name' => $form_state['values']['name'],
+    'secondname' => $form_state['values']['secondname'],
+    'age' => $form_state['values']['age'],
+    'email' => $form_state['values']['email'],
   );
-  $mail = drupal_mail('internet_lobby', 'key', $mailname, language_default(), $params);
+  $mail = drupal_mail('internet_lobby', 'key', "admin@example.com", language_default(), $params);
   if ($mail['result']) {    
     drupal_set_message(t('Message sent')); 
   } 
