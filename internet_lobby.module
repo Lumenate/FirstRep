@@ -74,10 +74,8 @@
     $message  = $form_state['values']['message'];
     $sender   = "Sender: ".$form_state['values']['surname']." ".$form_state['values']['name']." ".$form_state['values']['secondname'].", ".$form_state['values']['age']." age";
     $params   = array (
-      'context' => array(
-        'subject' => t($theme),
-        'body'    => t($message),
-        )
+      'subject' => t($theme),
+      'body'    => t($message),
     );
     $mail     = drupal_mail('internet_lobby','key',$mailname,language_default(),$params,$sender);
     //$mail['result'] = $system->mail($mail);
@@ -94,7 +92,7 @@
   */
 function internet_lobby_mail($key, &$message, $params) {
   if ($key == 'key') {
-    $message['subject'] = $params['context']['subject'];
-    $message['body'][]  = $params['context']['body'];
+    $message['subject'] = $params['subject'];
+    $message['body'][]  = $params['body'];
   }
 }
