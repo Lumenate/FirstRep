@@ -9,6 +9,12 @@ function internet_lobby_menu() {
     'page arguments' => array('internet_lobby_page_form'),
     'access callback' => TRUE,
   );
+  $items['internet-lobby-email-page'] = array (
+    'title' => 'Internet lobby email',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('internet_lobby_email_page_form'),
+    'access callback' => TRUE,
+  );
   return $items;
 }
 
@@ -43,11 +49,6 @@ function internet_lobby_page_form($form, $form_state) {
     '#maxlength' => 3,
     '#required' => TRUE,
   );
-  $form['reciever'] = array (
-    '#type' => 'textfield',
-    '#title' => t('Reciever email'),
-    '#required' => TRUE,
-  );
   $form['theme'] = array (
     '#type' => 'textfield',
     '#title' => t('Theme'),
@@ -79,7 +80,8 @@ function internet_lobby_page_form_validate($form, &$form_state) {
   * Submit function for internet_lobby_page_form.
   */
 function internet_lobby_page_form_submit($form, &$form_state) {
-  $mail = drupal_mail('internet_lobby', 'key', $form_state['values']['reciever'], language_default(), $form_state['values']);
+  $mailto = db_query('SELECT mail FROM {admin_mail} WHERE id = 1', array('id' => '1'))->fetchField();
+  $mail = drupal_mail('internet_lobby', 'key', $mailto, language_default(), $form_state['values']);
   if ($mail['result']) {    
     drupal_set_message(t('Message sent')); 
   } 
@@ -95,5 +97,40 @@ function internet_lobby_mail($key, &$message, $params) {
   if ($key == 'key') {
     $message['subject'] = $params['theme'];
     $message['body'][] = $params['message'] . "\n" . $params['surname'] . " " . $params['name'] . " " . $params['secondname'] . ", " . $params['age'] . ", " . $params['email'];
+  }
+}
+
+/**
+  * Build mail form
+  */
+function internet_lobby_email_page_form($form, $form_state) {
+  $form['mail'] = array (
+    '#type' => 'textfield',
+    '#title' => t('E-mail you want to use'),
+    '#required' => TRUE,
+  );
+  $form['submit'] = array (
+    '#type' => 'submit',
+    '#value' => t('Send'),
+    '#required' => TRUE,
+  );
+  return $form;
+}
+
+/**
+  * Submit function for internet_lobby_email_page_form.
+  */
+function internet_lobby_email_page_form_submit($form, &$form_state) {
+  if (user_access('administer')) {
+    db_merge('admin_mail')
+      -> key(array('id' => '1'))
+      -> fields(array(
+          'mail' => $form_state['values']['mail'],
+        )
+      )
+      -> execute();
+  }
+  else {
+    drupal_set_message(t("You don't have enough authority"));
   }
 }
