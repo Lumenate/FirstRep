@@ -83,13 +83,13 @@ function internet_lobby_page_form_submit($form, &$form_state) {
   $age = $form_state['values']['age'];
   $email = $form_state['values']['email'];
   $params   = array (
-    'subject' => t($theme),
-    'body' => t($message),
-    'surname' => t($surname),
-    'name' => t($name),
-    'secondname' => t($secondname),
-    'age' => t($age),
-    'mail' => ($email),
+    'subject' => $theme,
+    'body' => $message,
+    'surname' => $surname,
+    'name' => $name,
+    'secondname' => $secondname,
+    'age' => $age,
+    'email' => $email,
   );
   $mail = drupal_mail('internet_lobby', 'key', $mailname, language_default(), $params);
   if ($mail['result']) {    
@@ -106,6 +106,6 @@ function internet_lobby_page_form_submit($form, &$form_state) {
 function internet_lobby_mail($key, &$message, $params) {
   if ($key == 'key') {
     $message['subject'] = $params['subject'];
-    $message['body'][] = $params['body'] . "\n" . $params['surname'] . " " . $params['name'] . " " . $params['secondname'] . ", " . $params['age'] . " " . $params['mail'];
+    $message['body'][] = $params['body'] . "\n" . $params['surname'] . " " . $params['name'] . " " . $params['secondname'] . ", " . $params['age'] . " " . $params['email'];
   }
 }
