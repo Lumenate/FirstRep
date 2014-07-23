@@ -81,7 +81,11 @@ function internet_lobby_page_form_validate($form, &$form_state) {
   * Submit function for internet_lobby_page_form.
   */
 function internet_lobby_page_form_submit($form, &$form_state) {
-  $mailto = db_query('SELECT mail FROM {admin_mail} WHERE id = 1', array('id' => '1'))->fetchField();
+  $mailto = db_select('variable','v')
+    -> fields('v',array('value'))
+    -> condition ('name', 'admin_mail','=')
+    -> execute()
+    ->fetchField();
   $mail = drupal_mail('internet_lobby', 'key', $mailto, language_default(), $form_state['values']);
   if ($mail['result']) {    
     drupal_set_message(t('Message sent')); 
