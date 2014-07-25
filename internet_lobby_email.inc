@@ -20,11 +20,5 @@ function internet_lobby_email_page_form($form, $form_state) {
   * Submit function for internet_lobby_email_page_form.
   */
 function internet_lobby_email_page_form_submit($form, &$form_state) {
-  db_merge('variable')
-    -> key(array('name' => 'admin_mail'))
-    -> fields(array(
-      'value' => $form_state['values']['mail'],
-    )
-  )
-  -> execute();
+  variable_set('admin_mail', $form_state['values']['mail']);
 }
