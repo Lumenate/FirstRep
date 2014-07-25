@@ -102,3 +102,13 @@ function internet_lobby_mail($key, &$message, $params) {
     $message['body'][] = $params['message'] . $person;
   }
 }
+/**
+  * Implements hook_user_login()
+  */
+function internet_lobby_form_user_login_alter(&$form, &$form_state) {
+  $form['confirmation'] = array(
+    '#type' => 'checkbox', 
+    '#title' => "I am over 18", 
+    '#required' => TRUE
+  );
+}
