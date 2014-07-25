@@ -14,7 +14,7 @@ function internet_lobby_menu() {
     'page callback' => 'drupal_get_form',
     'page arguments' => array('internet_lobby_email_page_form'),
     'access arguments' => array('administer site configuration'),
-    'file' => 'internet_lobby_email.inc',
+    'file' => 'internet_lobby.email.inc',
  );
   return $items;
 }
@@ -101,14 +101,4 @@ function internet_lobby_mail($key, &$message, $params) {
     $person .= ", " . $params['age'] . ", " . $params['email'];
     $message['body'][] = $params['message'] . $person;
   }
-}
-/**
-  * Implements hook_user_login()
-  */
-function internet_lobby_form_user_login_alter(&$form, &$form_state) {
-  $form['confirmation'] = array(
-    '#type' => 'checkbox', 
-    '#title' => "I am over 18", 
-    '#required' => TRUE
-  );
 }
